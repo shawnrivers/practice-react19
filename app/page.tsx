@@ -4,6 +4,7 @@ import { request } from "@/app/libs/api";
 import { useActionState } from "react";
 
 export default function Home() {
+  // Example of useActionState
   const [state, doAction, isPending] = useActionState<
     Promise<
       | {
@@ -35,6 +36,12 @@ export default function Home() {
       };
     }
   }, null);
+
+  // Let's try
+  // - useFormStatus
+  // - useOptimistic
+  // - use
+  // - server component ?
 
   return (
     <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
