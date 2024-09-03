@@ -1,47 +1,22 @@
 "use client";
 
-import { request } from "@/app/libs/api";
-import { useActionState } from "react";
+import { Button } from "@/app/components/Button";
+import { Result } from "@/app/components/Result";
+import { useForm } from "@/app/hooks/useForm";
+
+export type State =
+  | {
+      data: Record<string, unknown>;
+      error: null;
+    }
+  | {
+      data: null;
+      error: Record<string, unknown>;
+    }
+  | null;
 
 export default function Home() {
-  // Example of useActionState
-  const [state, doAction, isPending] = useActionState<
-    Promise<
-      | {
-          data: Record<string, unknown>;
-          error: null;
-        }
-      | {
-          data: null;
-          error: Record<string, unknown>;
-        }
-      | null
-    >,
-    FormData
-  >(async (_, formData) => {
-    try {
-      const res = await request({
-        delay: parseInt(formData.get("delay") as string, 10),
-        body: JSON.parse(formData.get("body") as string),
-        status: parseInt(formData.get("status") as string, 10),
-      });
-      return {
-        data: res as any,
-        error: null,
-      };
-    } catch (error) {
-      return {
-        data: null,
-        error: error as any,
-      };
-    }
-  }, null);
-
-  // Let's try
-  // - useFormStatus
-  // - useOptimistic
-  // - use
-  // - server component ?
+  const [state, doAction, isPending] = useForm();
 
   return (
     <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
@@ -70,19 +45,9 @@ export default function Home() {
           Delay
           <input type="delay" name="delay" defaultValue={1000} />
         </label>
-        <button type="submit" disabled={isPending}>
-          Submit
-        </button>
+        <Button />
       </form>
-      <div>
-        {isPending
-          ? "loading..."
-          : state === null
-            ? "before action"
-            : state.data !== null
-              ? JSON.stringify(state.data)
-              : (state.error as any)}
-      </div>
+      <Result state={state} pending={isPending} />
     </main>
   );
 }
