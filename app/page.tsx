@@ -78,10 +78,10 @@ export default function Home() {
         {isPending
           ? "loading..."
           : state === null
-          ? "before action"
-          : state.data !== null
-          ? JSON.stringify(state.data)
-          : (state.error as any)}
+            ? "before action"
+            : state.data !== null
+              ? JSON.stringify(state.data)
+              : (state.error as any)}
       </div>
     </main>
   );
